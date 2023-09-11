@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 70 }}>
       <color attach="background" args={['white']} />
-      <Model scale={0.4} rotation={[-Math.PI / 4, -0.5, 0.5]} position={[0, 0, 2]} />
+      <Model scale={1} rotation={[0, 0, 0]} position={[0, 0, 2]} />
       <Floor />
       <Environment preset="night">
         <group rotation={[1, 0, 0]}>
@@ -24,11 +24,16 @@ export default function App() {
 
 function Model(props) {
   const ref = useRef()
-  const { nodes } = useGLTF('/shape.glb')
-  useFrame((state, delta) => (ref.current.rotation.x += delta / 3))
+  const { nodes } = useGLTF('/untitled.glb')
+  console.log('ref.current', ref.current)
+  useFrame((state, delta) => {
+    ref.current.geometry.center();
+    ref.current.rotation.x += delta / 3
+  })
+  console.log('nodes', nodes)
   return (
     <group {...props} dispose={null}>
-      <mesh ref={ref} geometry={nodes.Cylinder.geometry}>
+      <mesh ref={ref} geometry={nodes.Text.geometry} >
         <MeshTransmissionMaterial
           backside
           backsideThickness={-3}
